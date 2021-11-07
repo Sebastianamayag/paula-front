@@ -100,7 +100,7 @@ export const Task = (props) => {
                                             type="text"
                                             placeholder="Nombre de la actividad"
                                             onChange={(e)=>setActividadnp(e.target.value)}
-                                            value={nombre}
+                                            value={actividadnp}
                                         />
                                     </div>
                                 </>
