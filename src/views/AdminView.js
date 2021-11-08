@@ -6,6 +6,7 @@ export const AdminView = () => {
     const history=useHistory();
     const [params, setData] = useState([]);
     const [users, setUsers] = useState([]);
+    const [task, setTask] = useState([]);
     useEffect(() => {
         traerData();
     }, [])
@@ -15,6 +16,8 @@ export const AdminView = () => {
         setData(data.data.params);
         const datas=await apiDB.get('users');
         setUsers(datas.data.users);
+        const tasks=await apiDB.get('tasks/all');
+        setTask(tasks.data.task);
     }
 
     const handleDelete=async(value,id)=>{
@@ -51,8 +54,8 @@ export const AdminView = () => {
         <div style={{height:window.innerHeight,flex:1}} >
             <NavBar/>
             <div>
-                <div style={{backgroundColor:'#193441',marginTop:10,padding:5}} >
-                    <h1 style={{textAlign:'center',color:'white'}} >Params</h1>
+                <div style={{marginTop:10,padding:5}} >
+                    <h1 style={{textAlign:'center',color:'#193441'}} >Params</h1>
                 </div>
                 {
                     params.length>0 ?
@@ -103,8 +106,8 @@ export const AdminView = () => {
                 }
             </div>
             <div>
-                <div style={{backgroundColor:'#193441',padding:5,marginTop:20}} >
-                    <h1 style={{textAlign:'center',color:'white'}} >Usuarios</h1>
+                <div style={{padding:5,marginTop:20}} >
+                    <h1 style={{textAlign:'center',color:'#193441'}} >Usuarios</h1>
                 </div>
                 {
                     users.length>0 ?
@@ -137,6 +140,55 @@ export const AdminView = () => {
                     ):
                     (
                         <h3 style={{textAlign:'center'}} >No hay usuarios creados</h3>
+                    )
+                }
+            </div>
+
+            <div>
+                <div style={{padding:5,marginTop:20}} >
+                    <h1 style={{textAlign:'center',color:'#193441'}} >Tareas</h1>
+                </div>
+                {
+                    task.length>0 ?
+                    (
+                        <table class="table table-striped table-bordered" style={{marginTop:10}} >
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nombre Tarea</th>
+                                    <th>Usuario</th>
+                                    <th>Horas Presupuestadas</th>
+                                    <th>Horas Realizadas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    task.map((datas,key)=>
+                                    (
+                                        <tr key={key} >
+                                            {
+                                                users.map((usuarios,key)=>{
+                                                    if(datas.id_usuario===usuarios.id){
+                                                        return (
+                                                            <>
+                                                                <td>{datas.id}</td>
+                                                                <td>{datas.nombre}</td>
+                                                                <td>{usuarios.nombre}</td>
+                                                                <td>{datas.horasp}</td>
+                                                                <td>{datas.horasr}</td>  
+                                                            </>
+                                                        )
+                                                    }
+                                                })
+                                            }
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    ):
+                    (
+                        <h3 style={{textAlign:'center'}} >No hay tareas creadas</h3>
                     )
                 }
             </div>
